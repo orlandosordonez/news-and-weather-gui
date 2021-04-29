@@ -134,7 +134,7 @@ class App extends Component {
             <Typography variant={'h5'} component={'div'} >
               {((parseFloat(this.state.weather.temperature)).toFixed(2) - 273.15).toFixed(2) + "°C"}
             </Typography>
-            <Typography variant={'body2'} component={'p'} >
+            <Typography variant={'body2'} component={'div'} >
               Decription: {this.state.weather.weather_description[0]}
               <br />
               Wind speed: {this.state.weather.wind_speed}
@@ -156,6 +156,43 @@ class App extends Component {
         </Typography>
       </CardContent>
     </Card>
+    )
+  }
+
+  renderCardNews(){
+    return(
+      <div>
+      {this.state.news.map((contened, index) => {
+        const {autor, title,description,url,urlImage,publishedAt,content} = contened //destructuring
+        return (
+          <div>
+          <Card className="cardNews">
+            <CardHeader
+              title={title}
+              subheader={publishedAt}
+            />
+            <CardMedia
+              className="imageCard"
+              image={urlImage}
+              title={title}
+            />
+            <CardContent>
+              <Typography variant={'body2'} color={'textSecondary'}>
+                {content.slice(0,-13)}
+                <a
+                  href={url}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  See more...
+                </a>
+              </Typography>
+            </CardContent>
+          </Card>
+          </div>
+          )
+      })}
+    </div>
     )
   }
   /*
@@ -202,42 +239,7 @@ class App extends Component {
     </div>
     )
   }*/
-  renderCardNews(){
-    return(
-      <div>
-      {this.state.news.map((contened, index) => {
-        const {autor, title,description,url,urlImage,publishedAt,content} = contened //destructuring
-        return (
-          <div>
-          <Card className="cardNews">
-            <CardHeader
-              title={title}
-              subheader={publishedAt}
-            />
-            <CardMedia
-              className="imageCard"
-              image={urlImage}
-              title={title}
-            />
-            <CardContent>
-              <Typography variant={'body2'} color={'textSecondary'}>
-                {content.slice(0,-13)}
-                <a
-                  href={url}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  See more...
-                </a>
-              </Typography>
-            </CardContent>
-          </Card>
-          </div>
-          )
-      })}
-    </div>
-    )
-  }
+
   renderTableData(){
     return(
       <div style={{ height: 400, width: '100%' }}>
@@ -314,10 +316,19 @@ class App extends Component {
               {this.state.lengthHistorial > 0 ?
                 <Autocomplete
                   freeSolo
-                  onUpdateInput={this.handleChange}
-                  onChange = {(event, value) => this.setState({name:value.city})}
+                  onChange = {(event, value) =>
+                    this.setState(
+                      value != undefined
+                      ? {name:value.city}
+                      : {name:null}
+                    )
+                  }
                   options={this.state.historial.history}
-                  getOptionLabel={(option) => option.city}
+                  getOptionLabel={(option) =>
+                    option !== undefined ?
+                    option.city
+                    : "Please enter a city..."
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
