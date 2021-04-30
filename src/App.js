@@ -20,7 +20,6 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      temperature : 0,
       weather : [],
       historial:[],
       news:[],
@@ -40,6 +39,7 @@ class App extends Component {
   getApi2(citia) {
     const url = 'https://localhost:44359/weather-and-news/api/Cities/';
     const url2 = url + citia
+    console.log(url2)
     fetch(url2 ,{
       method: 'GET'
     })
@@ -56,13 +56,9 @@ class App extends Component {
       this.setState({
         lengthNews : weather.news.length
       })
-      let a = this.state.weather.temperature
-      this.setState({
-        temperature : a
-      })
       console.log(this.state.weather.temperature)
       console.log(this.state.news)
-      console.log(weather)
+      console.log(this.state.name)
     })
 
   }
@@ -282,6 +278,13 @@ class App extends Component {
       </div>
     )
   }*/
+
+  keyEnter(){
+    const handleOnKeyDown = event => {
+    if (event.key === "Enter") this.getApi2(this.name);
+  };
+  }
+
   renderAutocomplete(name){
     return(
     <div className="autoCompleteDiv">
@@ -314,18 +317,29 @@ class App extends Component {
               {this.state.lengthHistorial > 0 ?
                 <Autocomplete
                   freeSolo
+                  disableClearable
+                  includeInputInList
+
+                  onInputChange={(event, value) =>
+                    {
+                      this.setState(
+                         {name:value}
+                    )}
+                  }
                   onChange = {(event, value) =>
-                    this.setState(
+                    {
+                      this.setState(
                       value != undefined
                       ? {name:value.city}
                       : {name:null}
-                    )
+                    )}
+
                   }
                   options={this.state.historial.history}
                   getOptionLabel={(option) =>
                     option !== undefined ?
                     option.city
-                    : "Please enter a city..."
+                    : console.log(option)
                   }
                   renderInput={(params) => (
                     <TextField
@@ -333,6 +347,7 @@ class App extends Component {
                       label="Search city"
                       margin="normal"
                       variant="outlined"
+                      handleOnKeyDown= {this.keyEnter}
                        />
                     )
                   }
