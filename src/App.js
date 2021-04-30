@@ -7,15 +7,16 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 //import {Table, TableContainer, TableHead, TableCell, TableBody, TableRow, Button, TextField} from '@material-ui/core';
-import {TextField, Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, Avatar, Typography} from '@material-ui/core';
+import {TextField, Card, CardHeader, CardMedia, CardContent, Button, CardActions, Collapse, Avatar, Typography} from '@material-ui/core';
 
 const columnsHistorial = [
-  {field: 'city', headerName: 'Cuidad', width:100},
-  {field: 'info', headerName: 'Informacion', width:100}
+  {field: 'city', headerName: 'City', width:100},
+  {field: 'info', headerName: 'Information', width:100}
 
 ]
 
 class App extends Component {
+
   constructor(props){
     super(props);
     this.state={
@@ -243,7 +244,12 @@ class App extends Component {
   renderTableData(){
     return(
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={this.state.historial.history} columns={columnsHistorial} pageSize={5} getRowId={(r) => uuidv4()}/>
+        <DataGrid
+          rows={this.state.historial.history}
+          columns={columnsHistorial}
+          pageSize={5}
+          getRowId={(r) => uuidv4()}
+        />
       </div>
     )
   }
@@ -302,16 +308,8 @@ class App extends Component {
     const { name } = this.state
     return (
       <div className="App">
-        <h4>Busqueda</h4>
+        <h2>News and Weather of City</h2>
           <div>
-            <button onClick ={this.getApi1}> Historial </button>
-            <input
-              id='city'
-              name='nameCity'
-              placeholder='Cuidad'
-              onChange = {this.handleChange} />
-            <button onClick ={() => this.getApi2(name)}> nombre</button>
-            <br />
             <div className="autoCompleteDiv">
               {this.state.lengthHistorial > 0 ?
                 <Autocomplete
@@ -332,7 +330,7 @@ class App extends Component {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Search input"
+                      label="Search city"
                       margin="normal"
                       variant="outlined"
                        />
@@ -341,6 +339,24 @@ class App extends Component {
                 />
               :""
               }
+            </div>
+            <div>
+              <Button
+                variant={'contained'}
+                onClick ={this.getApi1}
+                style={{backgroundColor: '#215a96', color: '#FFFFFF'}}
+              >
+                Consultation History
+              </Button>
+              {"  "}
+              <Button
+                className="buttonSearch"
+                variant={'contained'}
+                onClick ={() => this.getApi2(name)}
+                style={{backgroundColor: '#4889cf', color: '#FFFFFF'}}
+              >
+                Seach
+              </Button>
             </div>
           </div>
           <br></br>
