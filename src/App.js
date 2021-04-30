@@ -24,6 +24,7 @@ class App extends Component {
       historial:[],
       news:[],
       name:"",
+      name2:"",
       lengthHistorial:0,
       lengthNews:0,
       isActivated: false,
@@ -55,6 +56,9 @@ class App extends Component {
       })
       this.setState({
         lengthNews : weather.news.length
+      })
+      this.setState({
+        name2 : this.state.name
       })
       console.log(this.state.weather.temperature)
       console.log(this.state.news)
@@ -126,7 +130,7 @@ class App extends Component {
         <Typography>
           <Box  m={1}>
             <Typography variant={'h3'} component={'div'} >
-              {this.state.name}
+              {this.state.name2}
             </Typography>
             <Typography variant={'h5'} component={'div'} >
               {((parseFloat(this.state.weather.temperature)).toFixed(2) - 273.15).toFixed(2) + "°C"}
@@ -279,11 +283,6 @@ class App extends Component {
     )
   }*/
 
-  keyEnter(){
-    const handleOnKeyDown = event => {
-    if (event.key === "Enter") this.getApi2(this.name);
-  };
-  }
 
   renderAutocomplete(name){
     return(
